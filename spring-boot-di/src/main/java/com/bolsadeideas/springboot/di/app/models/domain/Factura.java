@@ -11,11 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
-
 @Component
 @RequestScope
-public class Factura implements Serializable  {
-	
+public class Factura implements Serializable {
+
 	private static final long serialVersionUID = 7871901310236732952L;
 	@Value("${factura.descripcion}")
 	private String descripcion;
@@ -27,14 +26,13 @@ public class Factura implements Serializable  {
 	@PostConstruct
 	public void incializar() {
 		cliente.setNombre(cliente.getNombre().concat(" ").concat("José"));
-		descripcion = descripcion.concat("del cliente: ").concat(cliente.getNombre()); 
 	}
-	
+
 	@PreDestroy
 	public void destruir() {
 		System.out.println("Factura destruida".concat(descripcion));
 	}
-	
+
 	// Getters and Setters
 	public String getDescripcion() {
 		return descripcion;
