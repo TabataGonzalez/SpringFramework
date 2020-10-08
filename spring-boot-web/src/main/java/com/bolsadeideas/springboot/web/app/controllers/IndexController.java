@@ -1,7 +1,5 @@
 package com.bolsadeideas.springboot.web.app.controllers;
 
-
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import com.bolsadeideas.springboot.web.app.models.Usuario;
-
 
 @Controller
 @RequestMapping("/app")

@@ -1,14 +1,24 @@
 package com.bolsadeideas.springboot.form.app.models.domain;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class Usuario {
-
+			
+	private String identificador; 
+	
+	@NotEmpty(message = "el nombre no puede ser vacio") 
+	private String nombre; 
+	@NotEmpty 
+	private String apellido; 
 	@NotEmpty //Con los strings validamos con esto 
+	@Size(min =3, max =8)
 	private String username;
 	@NotEmpty
 	private String password;
 	@NotEmpty
+	@Email(message="correo con formato incorrecto")
 	private String email;
 
 	//Getters and setters
@@ -36,4 +46,30 @@ public class Usuario {
 		this.email = email;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getIdentificador() {
+		return identificador;
+	}
+
+	public void setIdentificador(String identificador) {
+		this.identificador = identificador;
+	}
+
+	
+	
 }
