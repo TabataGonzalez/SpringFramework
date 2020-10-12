@@ -40,4 +40,20 @@ public class Role {
 		this.codigo = codigo;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(this == obj) {
+			return true; 
+		}
+		
+		if (!(obj instanceof Role)) {
+			return false; 
+		}
+		
+		Role role = (Role) obj;
+		return this.id!=null && id.equals(role.getId());
+	}
+
+	
 }

@@ -1,8 +1,5 @@
 package com.bolsadeideas.springboot.form.app.models.domain;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 public class Pais {
 
 	private Integer id;
@@ -42,4 +39,10 @@ public class Pais {
 		this.nombre = nombre;
 	}
 
+	@Override
+	public String toString() {
+		return this.id.toString();
+	}
+
+	
 }

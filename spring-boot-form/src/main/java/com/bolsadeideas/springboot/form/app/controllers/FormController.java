@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -75,6 +76,11 @@ public class FormController {
 		return roleService.listar();
 	}
 	
+	@ModelAttribute("genero")
+	public List<String> gero(){
+		return Arrays.asList("Hombre", "Mujer"); 
+	}
+	
 	@ModelAttribute("listaRolesString")
 	public List<String> listaRolesString(){
 		List<String> roles = new ArrayList<>(); 
@@ -114,25 +120,41 @@ public class FormController {
 	@GetMapping("/form")
 	public String form(Model model) {
 		Usuario usuario = new Usuario();
+		
 		usuario.setNombre("John");
 		usuario.setApellido("Doe");
 		usuario.setIdentificador("12.456.789-K");
+		usuario.setHabilitar(true);
+		usuario.setValorSecreto("valor secreto");
+		usuario.setPais(new Pais(3, "CL", "Chile"));//El que aparecera seleccionado será este país
+		usuario.setRoles(Arrays.asList(new Role(2, "Usuario", "ROLE_USER")));
+		
 		model.addAttribute("titulo", "Formulario usuarios");
 		model.addAttribute("usuario", usuario);
 		return "form";
 	}
 
 	@PostMapping("/form")
-	public String procesar(@Valid Usuario usuario, BindingResult result, Model model, SessionStatus status) {
+	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) {
 		// validador.validate(usuario, result);
-		model.addAttribute("titulo", "Resultado form");
 
 		if (result.hasErrors()) {
+			model.addAttribute("titulo", "Resultado form");
 			return "form";
 		}
-		model.addAttribute("usuario", usuario);
+		
+		return "redirect:/ver";
+	}
+	
+	@GetMapping("/ver")
+	public String ver(@SessionAttribute(name = "usuario",required = false) Usuario usuario, Model model,  SessionStatus status) {
+		if(usuario == null) {
+			return "redirect:/form";
+		}
+		model.addAttribute("titulo", "Resultado form");
 		status.setComplete();
-		return "resultado";
+		
+		return "resultado"; 
 	}
 
 }
