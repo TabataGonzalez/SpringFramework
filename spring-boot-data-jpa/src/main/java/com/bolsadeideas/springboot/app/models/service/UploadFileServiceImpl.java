@@ -20,41 +20,42 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadFileServiceImpl implements IUploadFileService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	private final static String UPLOADS_FOLDER = "uploads";
 
 	@Override
 	public Resource load(String filename) throws MalformedURLException {
-		
 		Path pathFoto = getPath(filename);
 		log.info("pathFoto: " + pathFoto);
-		Resource recurso = null;
-		recurso = new UrlResource(pathFoto.toUri());
-		if (!recurso.exists() && !recurso.isReadable()) {
-			throw new RuntimeException("No se puede cargar la imagen" + pathFoto.toString());
-		}
 
+		Resource recurso = new UrlResource(pathFoto.toUri());
+
+		if (!recurso.exists() || !recurso.isReadable()) {
+			throw new RuntimeException("Error: no se puede cargar la imagen: " + pathFoto.toString());
+		}
 		return recurso;
 	}
 
 	@Override
 	public String copy(MultipartFile file) throws IOException {
-		
-		String uniqueFilename = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
-		Path rootPath = getPath(uniqueFilename); 
-		log.info("Rootpath: " + rootPath);
+		String uniqueFilename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+		Path rootPath = getPath(uniqueFilename);
+
+		log.info("rootPath: " + rootPath);
+
 		Files.copy(file.getInputStream(), rootPath);
-			
+
 		return uniqueFilename;
 	}
 
 	@Override
 	public boolean delete(String filename) {
-		
-		Path rootPath = getPath(filename);  
-		File archivo = rootPath.toFile(); 
-		if(archivo.exists() && archivo.canRead()) {
-			if(archivo.delete()) {
-				return true;  
+		Path rootPath = getPath(filename);
+		File archivo = rootPath.toFile();
+
+		if (archivo.exists() && archivo.canRead()) {
+			if (archivo.delete()) {
+				return true;
 			}
 		}
 		return false;
@@ -66,12 +67,13 @@ public class UploadFileServiceImpl implements IUploadFileService {
 
 	@Override
 	public void deleteAll() {
-		FileSystemUtils.deleteRecursively(Paths.get(UPLOADS_FOLDER).toFile()); 
+		FileSystemUtils.deleteRecursively(Paths.get(UPLOADS_FOLDER).toFile());
+
 	}
 
 	@Override
 	public void init() throws IOException {
-		Files.createDirectory(Paths.get(UPLOADS_FOLDER)); 
-		
+		// TODO Auto-generated method stub
+		Files.createDirectory(Paths.get(UPLOADS_FOLDER));
 	}
 }

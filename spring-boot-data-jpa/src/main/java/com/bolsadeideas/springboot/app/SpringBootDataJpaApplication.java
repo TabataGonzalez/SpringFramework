@@ -8,17 +8,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.bolsadeideas.springboot.app.models.service.IUploadFileService;
 
 @SpringBootApplication
-public class SpringBootDataJpaApplication implements CommandLineRunner{
+public class SpringBootDataJpaApplication  implements CommandLineRunner {
 
 	@Autowired
-	IUploadFileService uploadFileService; 
+	IUploadFileService uploadFileService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootDataJpaApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		uploadFileService.deleteAll(); 
+		// TODO Auto-generated method stub
+		uploadFileService.deleteAll();
 		uploadFileService.init();
 	}
 
